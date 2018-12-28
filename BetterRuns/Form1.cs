@@ -1,11 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 using System.Text.RegularExpressions;
@@ -247,6 +242,7 @@ namespace BetterRuns
         List<int> offsets = new List<int>();
         string path = null;
         Stream myStream = null;
+        int contractoroffset;
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -286,9 +282,11 @@ namespace BetterRuns
 
 
                             offsets = GetAugBlockOffsets(origfile);
-                            
+                            contractoroffset = GetContractorOffset(origfile);
+
                             auglist = GetAugValues(origfile, offsets);
                             modfile = DeleteAugs(origfile, offsets);
+                            contractoroffset = GetContractorOffset(modfile);
 
 
                             //write buttons into aug flowlayoutpanel
@@ -306,6 +304,10 @@ namespace BetterRuns
 
 
                             num_nuts.Enabled = true;
+                            num_HP.Enabled = true;
+                            num_NRG.Enabled = true;
+                            num_tokens.Enabled = true;
+                            num_armor.Enabled = true;
                             listbox.Enabled = true;
                             listbox.Items.Clear();
                             AddAugsToListbox();
@@ -314,6 +316,11 @@ namespace BetterRuns
                             label_character.Enabled = true;
                             label_nuts.Enabled = true;
                             label_mode.Enabled = true;
+                            label_HP.Enabled = true;
+                            label_NRG.Enabled = true;
+                            label_armor.Enabled = true;
+                            label_tokens.Enabled = true;
+
                             if (combobox_mode.SelectedIndex == 0)
                             {
                                 label_lives.Enabled = true;
@@ -322,13 +329,21 @@ namespace BetterRuns
                             panel_weaponspowers.Enabled = true;
 
                             //get nuts
-                            num_nuts.Value = GetNutValue(modfile);
+                            num_nuts.Value = GetNutValue(4, modfile);
+
+                            //get tokens
+                            num_tokens.Value = GetNutValue(8, modfile);
+
+                            //get HP + NRG
+                            num_HP.Value = GetHPValue(contractoroffset, 71, modfile) / 1000;
+                            num_NRG.Value = Decimal.Divide(GetHPValue(contractoroffset, 79, modfile), 1000);
+                            num_armor.Value = GetHPValue(contractoroffset, 87, modfile) / 1000;
 
                             //get contractor
                             combobox_contractors.Enabled = true;
                             combobox_contractors.Items.Clear();
                             FillContractorCombobox();
-                            combobox_contractors.SelectedIndex = GetContractorValue(GetContractorOffset(modfile), modfile);
+                            combobox_contractors.SelectedIndex = GetContractorValue(contractoroffset, modfile);
 
                             //get mode value
                             combobox_mode.Enabled = true;
@@ -343,13 +358,13 @@ namespace BetterRuns
                             combobox_mainweapon.Enabled = true;
                             combobox_mainweapon.Items.Clear();
                             FillMainWeaponCombobox(combobox_mainweapon);
-                            combobox_mainweapon.SelectedItem = weapondict[GetMainWeaponValue(GetContractorOffset(modfile), modfile, 0)];
+                            combobox_mainweapon.SelectedItem = weapondict[GetMainWeaponValue(contractoroffset, modfile, 0)];
 
                             //get power 1
                             combobox_power1.Enabled = true;
                             combobox_power1.Items.Clear();
                             FillPowerCombobox(combobox_power1);
-                            combobox_power1.SelectedItem = powerdict[GetMainWeaponValue(GetContractorOffset(modfile), modfile, 2)];
+                            combobox_power1.SelectedItem = powerdict[GetMainWeaponValue(contractoroffset, modfile, 2)];
 
                             //get powers 2-8
                             FDracoPowers(combobox_power2, 4, false);
@@ -384,7 +399,15 @@ namespace BetterRuns
 
 
             //write nuts
-            WriteNutValue(tempmodfile);
+            WriteNutValue(num_nuts, 4, tempmodfile);
+
+            //write tokens
+            WriteNutValue(num_tokens, 8, tempmodfile);
+
+            //write HP + NRG
+            WriteHPValue(num_HP, contractoroffset, 71, tempmodfile);
+            WriteHPValue(num_NRG, contractoroffset, 79, tempmodfile);
+            WriteHPValue(num_armor, contractoroffset, 87, tempmodfile);
 
             //write contractor
             WriteContractorValue(tempmodfile);
@@ -561,24 +584,47 @@ namespace BetterRuns
         }
 
 
-        public int GetNutValue(List<byte> file)
+        public int GetNutValue(int offset, List<byte> file)
         {
-            
-            byte[] temp = { file[7], file[6], file[5], file[4] };
+            byte[] temp = { file[offset + 3], file[offset + 2], file[offset + 1], file[offset] };
             int result = BitConverter.ToInt32(temp, 0);
             
             return result;
         }
 
-        public void WriteNutValue(List<byte> file)
-        {
+        public void WriteNutValue(NumericUpDown nud, int offset, List<byte> file)
+        {     
             byte[] augbits = new byte[4];
-            int btntag = Convert.ToInt32(num_nuts.Value);
+            int btntag = Convert.ToInt32(nud.Value);
             augbits = BitConverter.GetBytes(btntag);
-            file[4] = augbits[3];
-            file[5] = augbits[2];
-            file[6] = augbits[1];
-            file[7] = augbits[0];
+            file[offset] = augbits[3];
+            file[offset + 1] = augbits[2];
+            file[offset + 2] = augbits[1];
+            file[offset + 3] = augbits[0];
+        }
+
+        public int GetHPValue(int offset, int exoffset, List<byte> file)
+        {
+
+            int tempoffset = offset + exoffset;
+            byte[] temp = { file[tempoffset+3], file[tempoffset + 2], file[tempoffset + 1], file[tempoffset] };
+            int result = BitConverter.ToInt32(temp, 0);
+
+            return result;
+        }
+
+        public void WriteHPValue(NumericUpDown nud, int offset, int exoffset, List<byte> file)
+        {
+            int tempoffset = offset + exoffset;
+            byte[] augbits = new byte[4];
+            double btntag2 = Convert.ToDouble(nud.Value);
+            btntag2 = btntag2 * 1000;
+            int btntag = Convert.ToInt32(btntag2);
+            augbits = BitConverter.GetBytes(btntag);
+            file[tempoffset] = augbits[3];
+            file[tempoffset + 1] = augbits[2];
+            file[tempoffset + 2] = augbits[1];
+            file[tempoffset + 3] = augbits[0];
         }
 
 
@@ -885,6 +931,11 @@ namespace BetterRuns
         }
 
         private void buttonlistlabel_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label1_Click_1(object sender, EventArgs e)
         {
 
         }
