@@ -7,5 +7,3 @@ How to use this editor:
 5. Go crazy.
 6. Click button "Save" and overwrite your old save state.
 7. Go crazy again.
-
-Get it here: BetterRuns/bin/Release/BetterRuns.exe
