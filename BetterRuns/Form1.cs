@@ -235,14 +235,33 @@ namespace BetterRuns
 
         };
 
+        Dictionary<int, string> bossdict = new Dictionary<int, string>
+        {                       
+            { 1, "Rollster" },
+            { 2, "Perforator" },
+            { 3, "Death Lotus" },
+            { 4, "Twin Astrals" },
+            { 5, "Shatterbeak" },
+            { 6, "Vile Visage" },
+            { 7, "Kur" },
+            { 8, "Eternal Star" },            
+            { 10, "Brighton Sharp" },
+            { 11, "Arlan Flat" },
+            { 0, "Bugnisort" },
+            { 9, "Brighton's Buggy Brother" }            
+
+        };
+
         byte[] thefile = new byte[] { };
         List<byte> origfile = new List<byte>();
         List<byte> modfile = new List<byte>();
         List<int> auglist = new List<int>();
         List<int> offsets = new List<int>();
+        List<int> bosslist = new List<int>();
         string path = null;
         Stream myStream = null;
         int contractoroffset;
+        int currentlevel = 0;
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -279,14 +298,16 @@ namespace BetterRuns
                             thefile = ReadStream(myStream);
                             origfile = thefile.ToList();
 
-
-
-                            offsets = GetAugBlockOffsets(origfile);
                             contractoroffset = GetContractorOffset(origfile);
+                            offsets = GetAugBlockOffsets(contractoroffset, 91, origfile);
+
+
 
                             auglist = GetAugValues(origfile, offsets);
                             modfile = DeleteAugs(origfile, offsets);
-                            contractoroffset = GetContractorOffset(modfile);
+                            
+                            
+                            bosslist = GetBossValues(modfile, GetBossBlockOffsets(contractoroffset - 3, origfile));
 
 
                             //write buttons into aug flowlayoutpanel
@@ -308,6 +329,7 @@ namespace BetterRuns
                             num_NRG.Enabled = true;
                             num_tokens.Enabled = true;
                             num_armor.Enabled = true;
+                            num_level.Enabled = true;
                             listbox.Enabled = true;
                             listbox.Items.Clear();
                             AddAugsToListbox();
@@ -320,6 +342,11 @@ namespace BetterRuns
                             label_NRG.Enabled = true;
                             label_armor.Enabled = true;
                             label_tokens.Enabled = true;
+                            label_seed.Enabled = true;
+                            label_level.Enabled = true;
+                            panel_stats.Enabled = true;
+                            textbox_seed.Enabled = true;
+                            panel_portals.Enabled = true;
 
                             if (combobox_mode.SelectedIndex == 0)
                             {
@@ -328,22 +355,44 @@ namespace BetterRuns
                             }
                             panel_weaponspowers.Enabled = true;
 
+                            //get current level
+                            currentlevel = bosslist.Count;
+                            num_level.Value = currentlevel;
+
+
                             //get nuts
                             num_nuts.Value = GetNutValue(4, modfile);
 
                             //get tokens
                             num_tokens.Value = GetNutValue(8, modfile);
 
-                            //get HP + NRG
+                            //get HP + NRG + armor + stats
                             num_HP.Value = GetHPValue(contractoroffset, 71, modfile) / 1000;
                             num_NRG.Value = Decimal.Divide(GetHPValue(contractoroffset, 79, modfile), 1000);
                             num_armor.Value = GetHPValue(contractoroffset, 87, modfile) / 1000;
+                            num_maxHP.Value = GetHPValue(contractoroffset, 5, modfile) / 1000;
+                            num_maxNRG.Value = GetHPValue(contractoroffset, 13, modfile) / 1000;
+                            num_atk.Value = GetHPValue(contractoroffset, 21, modfile);
+                            num_pwr.Value = GetHPValue(contractoroffset, 29, modfile);
+                            num_spd.Value = GetHPValue(contractoroffset, 37, modfile);
+                            num_jmp.Value = GetHPValue(contractoroffset, 45, modfile);                       
 
                             //get contractor
                             combobox_contractors.Enabled = true;
                             combobox_contractors.Items.Clear();
                             FillContractorCombobox();
                             combobox_contractors.SelectedIndex = GetContractorValue(contractoroffset, modfile);
+
+                            //get portals
+                            combobox_portal1.Items.Clear();
+                            combobox_portal2.Items.Clear();
+                            combobox_portal3.Items.Clear();
+                            FillPortals(combobox_portal1);
+                            FillPortals(combobox_portal2);
+                            FillPortals(combobox_portal3);
+                            combobox_portal1.SelectedItem = bossdict[GetPortalValue(30, modfile)];
+                            combobox_portal2.SelectedItem = bossdict[GetPortalValue(32, modfile)];
+                            combobox_portal3.SelectedItem = bossdict[GetPortalValue(34, modfile)];
 
                             //get mode value
                             combobox_mode.Enabled = true;
@@ -353,6 +402,9 @@ namespace BetterRuns
 
                             //get lives
                             num_lives.Value = GetLivesValue(modfile);
+
+                            //get seed
+                            textbox_seed.Text = DecimalToArbitrarySystem(GetSeedValue(12, modfile), 36);
 
                             //get main weapon
                             combobox_mainweapon.Enabled = true;
@@ -373,9 +425,7 @@ namespace BetterRuns
                             FDracoPowers(combobox_power5, 10, false);
                             FDracoPowers(combobox_power6, 12, false);
                             FDracoPowers(combobox_power7, 14, false);
-                            FDracoPowers(combobox_power8, 16, false);
-
-
+                            FDracoPowers(combobox_power8, 16, false);                                         
                         }
                     }
                 }
@@ -395,7 +445,7 @@ namespace BetterRuns
             
            
             List<byte> tempmodfile = new List<byte>(modfile);
-
+            List<int> tempbosslist = new List<int>(bosslist);
 
 
             //write nuts
@@ -404,13 +454,24 @@ namespace BetterRuns
             //write tokens
             WriteNutValue(num_tokens, 8, tempmodfile);
 
-            //write HP + NRG
+            //write HP + NRG + armor + stats
             WriteHPValue(num_HP, contractoroffset, 71, tempmodfile);
             WriteHPValue(num_NRG, contractoroffset, 79, tempmodfile);
             WriteHPValue(num_armor, contractoroffset, 87, tempmodfile);
+            WriteHPValue(num_maxHP, contractoroffset, 5, tempmodfile);
+            WriteHPValue(num_maxNRG, contractoroffset, 13, tempmodfile);
+            WriteStatValue(num_atk, contractoroffset, 21, tempmodfile);
+            WriteStatValue(num_pwr, contractoroffset, 29, tempmodfile);
+            WriteStatValue(num_spd, contractoroffset, 37, tempmodfile);
+            WriteStatValue(num_jmp, contractoroffset, 45, tempmodfile);
 
             //write contractor
             WriteContractorValue(tempmodfile);
+
+            //write portals
+            WritePortalValue(combobox_portal1, 30, tempmodfile);
+            WritePortalValue(combobox_portal2, 32, tempmodfile);
+            WritePortalValue(combobox_portal3, 34, tempmodfile);
 
             //write mode
             WriteModeValue(tempmodfile);
@@ -419,6 +480,16 @@ namespace BetterRuns
             if (combobox_mode.SelectedIndex == 0)
             {
                 WriteLivesValue(tempmodfile);
+            }
+
+            //write seed
+            try
+            {
+                WriteSeedValue(textbox_seed, 12, tempmodfile);
+            }
+            catch
+            {
+
             }
 
             //write main weapon
@@ -449,6 +520,7 @@ namespace BetterRuns
                 WritePowerValue(combobox_power8, tempmodfile, 16);
             }
 
+
             //write augs
             byte[] augbits = new byte[2];
             for (int i = panel.Controls.Count-1; i >= 0; i--)
@@ -459,10 +531,28 @@ namespace BetterRuns
                 tempmodfile.Insert(offsets[0], augbits[1]);
             }
 
-
-
+            //write level/boss sequence
+            DeleteBosses(tempmodfile, GetBossBlockOffsets(contractoroffset - 3, modfile), currentlevel);
 
             
+            if (Convert.ToInt32(num_level.Value) > currentlevel)
+            {
+                IncreaseLevel(tempbosslist, BossListDefeatedInCycle(tempbosslist, currentlevel), BossesDefeatedInCycle(currentlevel), Convert.ToInt32(num_level.Value) - currentlevel);
+                
+            }
+
+            if (Convert.ToInt32(num_level.Value) < currentlevel)
+            {
+                DecreaseLevel(tempbosslist, currentlevel - Convert.ToInt32(num_level.Value));
+
+            }
+
+            WriteBosses(tempmodfile, GetBossBlockOffsets(contractoroffset - 3, modfile), tempbosslist);
+
+
+
+
+
 
             //create final file
             byte[] finalfile = new byte[] { };
@@ -478,6 +568,11 @@ namespace BetterRuns
             {
                 File.WriteAllBytes(theSaveDialog.FileName, finalfile);
             }
+
+            //offsets = GetAugBlockOffsets(tempmodfile);
+            //contractoroffset = GetContractorOffset(tempmodfile);
+            //origfile = new List<byte>(tempmodfile);
+            //offsets = GetAugBlockOffsets(modfile);
 
         }
 
@@ -497,28 +592,54 @@ namespace BetterRuns
             }
         }
 
-
         
 
-
-        public List<int> GetAugBlockOffsets(List<byte> input)
-        {
-            List<int> b = new List<int>();
-            for (var i = input.Count - 73; i > 0; i -= 2)
-            {
-                byte[] temp = { input[i], input[i - 1] };
-                int result = BitConverter.ToUInt16(temp, 0);
-                if(result < 200 || result > 400)
-                {
-                    b.Add(i+1);
-                    b.Add(input.Count - 74);
-                    break;
-                }                         
-            }
+        ////Old way of finding offsets
+        //public List<int> GetAugBlockOffsets(List<byte> input)
+        //{
+        //    List<int> b = new List<int>();
+        //    for (var i = input.Count - 73; i > 0; i -= 2)
+        //    {
+        //        byte[] temp = { input[i], input[i - 1] };
+        //        int result = BitConverter.ToUInt16(temp, 0);
+        //        if(!augdict.ContainsKey(result))
+        //        {
+        //            b.Add(i+1);
+        //            b.Add(input.Count - 74);
+        //            break;
+        //        }                         
+        //    }
             
 
+        //    return b;
+        //}
+
+
+        public List<int> GetAugBlockOffsets(int coffset, int exoffset, List<byte> input)
+        {
+            List<int> b = new List<int>();
+            b.Add(coffset + exoffset);
+            b.Add(input.Count - 74);                                               
             return b;
         }
+
+        public List<int> GetBossBlockOffsets(int offset, List<byte> input)
+        {
+            List<int> c = new List<int>();
+            for (var i = offset; i > 0; i--)
+            {
+                byte[] temp = { input[i], 0x0 };
+                int result = BitConverter.ToUInt16(temp, 0);
+                if (result < 1 || result > 10)
+                {
+                    c.Add(i + 1);
+                    c.Add(offset);
+                    break;
+                }
+            }
+            return c;
+        }
+
 
 
 
@@ -530,6 +651,15 @@ namespace BetterRuns
             combobox_contractors.Items.Add(contractordict[3]);
             combobox_contractors.Items.Add(contractordict[4]);
             combobox_contractors.Items.Add(contractordict[5]);
+        }
+
+        public void FillPortals(ComboBox comb)
+        {
+
+            for (int i = 0; i < bossdict.Count; i++)
+            {
+                comb.Items.Add(bossdict.Values.ElementAt(i));
+            }
         }
 
         public void FillMainWeaponCombobox(ComboBox cbox)
@@ -570,7 +700,7 @@ namespace BetterRuns
             }
         }
 
-
+        //Get current augs
         public List<int> GetAugValues(List<byte> file, List<int> offsets)
         {
             List<int> a = new List<int>();
@@ -581,6 +711,110 @@ namespace BetterRuns
                 a.Add(result);
             }
             return a;
+        }
+
+
+        //Get defeated bosses
+        public List<int> GetBossValues(List<byte> file, List<int> offsets)
+        {
+            List<int> d = new List<int>();
+            for (int i = offsets[0]; i <= offsets[1]; i++)
+            {
+                byte[] temp = { file[i], 0x0 };
+                int result = BitConverter.ToInt16(temp, 0);
+                d.Add(result);
+            }
+            return d;
+        }
+
+        //for Endless: Check how many bosses were defeated in current 8-level cycle
+        public int BossesDefeatedInCycle(int currentlevel)
+        {
+            int y = currentlevel % 8;
+            return y;
+        }
+
+        public List<int> BossListDefeatedInCycle(List<int> bosslist, int currentlevel)
+        {
+            List<int> k = new List<int>();
+
+                int y = currentlevel % 8;
+                for (int i = bosslist.Count - 1 ; i >= bosslist.Count - y; i--)
+                {
+                    k.Add(bosslist[i]);
+                }
+
+            return k;
+        }
+
+
+        public void IncreaseLevel(List<int> bosslist, List<int> defeatedbosslist, int defeatedbosses, int howmanylevels)
+        {
+
+            List<int> m = RandomBossList();
+            int j = 0;
+            int remainingbosses = 8 - defeatedbosses;
+            while (defeatedbosses > 0 && howmanylevels > 0)
+            {
+                m.Remove(defeatedbosslist[j]);
+                j++;
+                defeatedbosses--;
+                
+                //remainingbosses--;
+            }
+
+
+            //howmanylevels = howmanylevels - remainingbosses;
+
+
+            for (int i = 0; i < m.Count; i++)
+            {
+                if (howmanylevels == 0)
+                {
+                    break;
+                }
+
+                bosslist.Add(m[i]);
+                howmanylevels--;
+            }
+
+            while (howmanylevels > 7)
+            {
+                List<int> n = RandomBossList();
+                for (int i = 0; i < n.Count; i++)
+                {
+                    bosslist.Add(n[i]);
+                }
+                howmanylevels = howmanylevels - 8;
+            }
+
+            List<int> o = RandomBossList();
+            for (int i = 0; i < 8 - howmanylevels; i++)
+            {
+                o.RemoveAt(0);
+            }
+
+            for (int i = 0; i < o.Count; i++)
+            {
+                bosslist.Add(o[i]);
+            }
+
+        }
+
+
+        public void DecreaseLevel(List<int> bosslist, int howmanylevels)
+        {
+            for (int i = 0; i < howmanylevels; i++)
+            {
+                bosslist.RemoveAt(bosslist.Count - 1);
+            }
+        }
+
+        public List<int> RandomBossList()
+        {
+            List<int> r = new List<int>(new int[] {1,2,3,4,5,6,7,8});
+            r = r.OrderBy(a => Guid.NewGuid()).ToList();
+            return r;
         }
 
 
@@ -627,6 +861,41 @@ namespace BetterRuns
             file[tempoffset + 3] = augbits[0];
         }
 
+        public void WriteStatValue(NumericUpDown nud, int offset, int exoffset, List<byte> file)
+        {
+            int tempoffset = offset + exoffset;
+            byte[] augbits = new byte[4];            
+            int btntag = Convert.ToInt32(nud.Value);
+            augbits = BitConverter.GetBytes(btntag);
+            file[tempoffset] = augbits[3];
+            file[tempoffset + 1] = augbits[2];
+            file[tempoffset + 2] = augbits[1];
+            file[tempoffset + 3] = augbits[0];
+        }
+
+        public long GetSeedValue(int offset, List<byte> file)
+        {            
+            byte[] temp = { file[offset + 7], file[offset + 6], file[offset + 5], file[offset + 4], file[offset + 3], file[offset + 2], file[offset + 1], file[offset] };
+            long result = BitConverter.ToInt64(temp, 0);
+
+            return result;
+        }
+
+        public void WriteSeedValue(TextBox text, int offset, List<byte> file)
+        {
+            byte[] augbits = new byte[8];
+            long btntag = ArbitraryToDecimalSystem(text.Text, 36);
+            augbits = BitConverter.GetBytes(btntag);
+            file[offset] = augbits[7];
+            file[offset + 1] = augbits[6];
+            file[offset + 2] = augbits[5];
+            file[offset + 3] = augbits[4];
+            file[offset + 4] = augbits[3];
+            file[offset + 5] = augbits[2];
+            file[offset + 6] = augbits[1];
+            file[offset + 7] = augbits[0];
+        }
+
 
         public int GetContractorValue(int offset, List<byte> file)
         {
@@ -640,6 +909,13 @@ namespace BetterRuns
             {
                 return 0;
             }
+        }
+
+        public int GetPortalValue(int offset, List<byte> file)
+        {
+                byte[] temp = new byte[] { file[offset], 0x0 };
+                int result = BitConverter.ToInt16(temp, 0);
+                return result;            
         }
 
         public int GetContractorOffset(List<byte> file)
@@ -665,6 +941,14 @@ namespace BetterRuns
             int btntag = Convert.ToInt16(combobox_contractors.SelectedIndex);
             augbits = BitConverter.GetBytes(btntag);
             file[GetContractorOffset(file)] = augbits[0];
+        }
+
+        public void WritePortalValue(ComboBox comb, int offset, List<byte> file)
+        {
+            byte[] augbits = new byte[1];
+            int btntag = Convert.ToInt16(bossdict.Keys.ElementAt(comb.SelectedIndex));
+            augbits = BitConverter.GetBytes(btntag);
+            file[offset] = augbits[0];
         }
 
         public int GetMainWeaponValue(int offset, List<byte> file, int exoffset)
@@ -792,6 +1076,26 @@ namespace BetterRuns
             List<byte> a = new List<byte>(file);
             a.RemoveRange(offsets[0], offsets[1] - offsets[0] + 2);
             return a;
+        }
+
+        public void DeleteBosses(List<byte> file, List<int> offsetlist, int howmanylevels)
+        {
+            for (int i = 0; i < howmanylevels; i++)
+            {
+                file.RemoveAt(offsetlist[0]);
+            }                                   
+        }
+
+        public void WriteBosses(List<byte> file, List<int> offsetlist, List<int> bosslist)
+        {
+            byte[] augbits = new byte[1];
+            for (int i = bosslist.Count -1 ; i >= 0; i--)
+            {
+                
+                augbits = BitConverter.GetBytes(bosslist[i]);
+                file.Insert(offsetlist[0], augbits[0]);
+                
+            }
         }
 
 
@@ -930,12 +1234,89 @@ namespace BetterRuns
             }
         }
 
-        private void buttonlistlabel_Click(object sender, EventArgs e)
+      
+
+
+
+
+
+        //base converter functions by Pavel Vladov
+        public static string DecimalToArbitrarySystem(long decimalNumber, int radix)
+        {
+            const int BitsInLong = 64;
+            const string Digits = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+            if (radix < 2 || radix > Digits.Length)
+                throw new ArgumentException("The radix must be >= 2 and <= " + Digits.Length.ToString());
+
+            if (decimalNumber == 0)
+                return "0";
+
+            int index = BitsInLong - 1;
+            long currentNumber = Math.Abs(decimalNumber);
+            char[] charArray = new char[BitsInLong];
+
+            while (currentNumber != 0)
+            {
+                int remainder = (int)(currentNumber % radix);
+                charArray[index--] = Digits[remainder];
+                currentNumber = currentNumber / radix;
+            }
+
+            string result = new String(charArray, index + 1, BitsInLong - index - 1);
+            if (decimalNumber < 0)
+            {
+                result = "-" + result;
+            }
+
+            return result;
+        }
+
+        public static long ArbitraryToDecimalSystem(string number, int radix)
+        {
+            const string Digits = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+            if (radix < 2 || radix > Digits.Length)
+                throw new ArgumentException("The radix must be >= 2 and <= " +
+                    Digits.Length.ToString());
+
+            if (String.IsNullOrEmpty(number))
+                return 0;
+
+            // Make sure the arbitrary numeral system number is in upper case
+            number = number.ToUpperInvariant();
+
+            long result = 0;
+            long multiplier = 1;
+            for (int i = number.Length - 1; i >= 0; i--)
+            {
+                char c = number[i];
+                if (i == 0 && c == '-')
+                {
+                    // This is the negative sign symbol
+                    result = -result;
+                    break;
+                }
+
+                int digit = Digits.IndexOf(c);
+                if (digit == -1)
+                    throw new ArgumentException(
+                        "Invalid character in the arbitrary numeral system number",
+                        "number");
+
+                result += digit * multiplier;
+                multiplier *= radix;
+            }
+
+            return result;
+        }
+
+        private void comboBox1_SelectedIndexChanged_1(object sender, EventArgs e)
         {
 
         }
 
-        private void label1_Click_1(object sender, EventArgs e)
+        private void comboBox1_SelectedIndexChanged_2(object sender, EventArgs e)
         {
 
         }

@@ -70,6 +70,30 @@
             this.label_armor = new System.Windows.Forms.Label();
             this.num_armor = new System.Windows.Forms.NumericUpDown();
             this.label_tokens = new System.Windows.Forms.Label();
+            this.panel_stats = new System.Windows.Forms.Panel();
+            this.label_spd = new System.Windows.Forms.Label();
+            this.num_spd = new System.Windows.Forms.NumericUpDown();
+            this.label_jmp = new System.Windows.Forms.Label();
+            this.num_jmp = new System.Windows.Forms.NumericUpDown();
+            this.label_pwr = new System.Windows.Forms.Label();
+            this.num_pwr = new System.Windows.Forms.NumericUpDown();
+            this.label_atk = new System.Windows.Forms.Label();
+            this.num_atk = new System.Windows.Forms.NumericUpDown();
+            this.label_maxNRG = new System.Windows.Forms.Label();
+            this.num_maxNRG = new System.Windows.Forms.NumericUpDown();
+            this.label_maxHP = new System.Windows.Forms.Label();
+            this.num_maxHP = new System.Windows.Forms.NumericUpDown();
+            this.textbox_seed = new System.Windows.Forms.TextBox();
+            this.label_seed = new System.Windows.Forms.Label();
+            this.panel_portals = new System.Windows.Forms.Panel();
+            this.label_portal3 = new System.Windows.Forms.Label();
+            this.combobox_portal3 = new System.Windows.Forms.ComboBox();
+            this.label_portal2 = new System.Windows.Forms.Label();
+            this.combobox_portal2 = new System.Windows.Forms.ComboBox();
+            this.label_portal1 = new System.Windows.Forms.Label();
+            this.combobox_portal1 = new System.Windows.Forms.ComboBox();
+            this.num_level = new System.Windows.Forms.NumericUpDown();
+            this.label_level = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.num_nuts)).BeginInit();
             this.panel_weaponspowers.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.num_lives)).BeginInit();
@@ -77,6 +101,15 @@
             ((System.ComponentModel.ISupportInitialize)(this.num_NRG)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.num_tokens)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.num_armor)).BeginInit();
+            this.panel_stats.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.num_spd)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.num_jmp)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.num_pwr)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.num_atk)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.num_maxNRG)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.num_maxHP)).BeginInit();
+            this.panel_portals.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.num_level)).BeginInit();
             this.SuspendLayout();
             // 
             // btn_openfile
@@ -92,10 +125,10 @@
             // panel
             // 
             this.panel.AutoScroll = true;
-            this.panel.Location = new System.Drawing.Point(34, 283);
+            this.panel.Location = new System.Drawing.Point(34, 306);
             this.panel.Name = "panel";
             this.panel.Padding = new System.Windows.Forms.Padding(0, 0, 12, 0);
-            this.panel.Size = new System.Drawing.Size(716, 316);
+            this.panel.Size = new System.Drawing.Size(716, 293);
             this.panel.TabIndex = 2;
             this.panel.Tag = "";
             // 
@@ -114,9 +147,9 @@
             // 
             this.listbox.Enabled = false;
             this.listbox.FormattingEnabled = true;
-            this.listbox.Location = new System.Drawing.Point(767, 283);
+            this.listbox.Location = new System.Drawing.Point(767, 306);
             this.listbox.Name = "listbox";
-            this.listbox.Size = new System.Drawing.Size(151, 277);
+            this.listbox.Size = new System.Drawing.Size(151, 264);
             this.listbox.TabIndex = 4;
             this.listbox.SelectedIndexChanged += new System.EventHandler(this.listbox_SelectedIndexChanged);
             // 
@@ -124,7 +157,7 @@
             // 
             this.auglistlabel.AutoSize = true;
             this.auglistlabel.Enabled = false;
-            this.auglistlabel.Location = new System.Drawing.Point(764, 257);
+            this.auglistlabel.Location = new System.Drawing.Point(764, 290);
             this.auglistlabel.Name = "auglistlabel";
             this.auglistlabel.Size = new System.Drawing.Size(135, 13);
             this.auglistlabel.TabIndex = 5;
@@ -134,12 +167,11 @@
             // 
             this.buttonlistlabel.AutoSize = true;
             this.buttonlistlabel.Enabled = false;
-            this.buttonlistlabel.Location = new System.Drawing.Point(31, 257);
+            this.buttonlistlabel.Location = new System.Drawing.Point(31, 290);
             this.buttonlistlabel.Name = "buttonlistlabel";
             this.buttonlistlabel.Size = new System.Drawing.Size(117, 13);
             this.buttonlistlabel.TabIndex = 6;
             this.buttonlistlabel.Text = "Augs – click to remove:";
-            this.buttonlistlabel.Click += new System.EventHandler(this.buttonlistlabel_Click);
             // 
             // combobox_contractors
             // 
@@ -157,7 +189,7 @@
             this.num_nuts.Enabled = false;
             this.num_nuts.Location = new System.Drawing.Point(34, 127);
             this.num_nuts.Maximum = new decimal(new int[] {
-            1879048191,
+            2047403647,
             0,
             0,
             0});
@@ -217,7 +249,7 @@
             this.panel_weaponspowers.Controls.Add(this.label_mainweapon);
             this.panel_weaponspowers.Controls.Add(this.combobox_mainweapon);
             this.panel_weaponspowers.Enabled = false;
-            this.panel_weaponspowers.Location = new System.Drawing.Point(549, 12);
+            this.panel_weaponspowers.Location = new System.Drawing.Point(615, 10);
             this.panel_weaponspowers.Name = "panel_weaponspowers";
             this.panel_weaponspowers.Size = new System.Drawing.Size(369, 239);
             this.panel_weaponspowers.TabIndex = 12;
@@ -381,7 +413,7 @@
             this.combobox_mode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.combobox_mode.Enabled = false;
             this.combobox_mode.FormattingEnabled = true;
-            this.combobox_mode.Location = new System.Drawing.Point(34, 170);
+            this.combobox_mode.Location = new System.Drawing.Point(34, 214);
             this.combobox_mode.Name = "combobox_mode";
             this.combobox_mode.Size = new System.Drawing.Size(160, 21);
             this.combobox_mode.TabIndex = 13;
@@ -391,7 +423,7 @@
             // 
             this.label_mode.AutoSize = true;
             this.label_mode.Enabled = false;
-            this.label_mode.Location = new System.Drawing.Point(31, 154);
+            this.label_mode.Location = new System.Drawing.Point(31, 198);
             this.label_mode.Name = "label_mode";
             this.label_mode.Size = new System.Drawing.Size(65, 13);
             this.label_mode.TabIndex = 14;
@@ -401,7 +433,7 @@
             // 
             this.label_lives.AutoSize = true;
             this.label_lives.Enabled = false;
-            this.label_lives.Location = new System.Drawing.Point(34, 198);
+            this.label_lives.Location = new System.Drawing.Point(31, 242);
             this.label_lives.Name = "label_lives";
             this.label_lives.Size = new System.Drawing.Size(115, 13);
             this.label_lives.TabIndex = 15;
@@ -410,7 +442,7 @@
             // num_lives
             // 
             this.num_lives.Enabled = false;
-            this.num_lives.Location = new System.Drawing.Point(34, 215);
+            this.num_lives.Location = new System.Drawing.Point(34, 259);
             this.num_lives.Maximum = new decimal(new int[] {
             255,
             0,
@@ -423,19 +455,14 @@
             // num_HP
             // 
             this.num_HP.Enabled = false;
-            this.num_HP.Location = new System.Drawing.Point(372, 86);
+            this.num_HP.Location = new System.Drawing.Point(6, 16);
             this.num_HP.Maximum = new decimal(new int[] {
-            100000,
-            0,
-            0,
-            0});
-            this.num_HP.Minimum = new decimal(new int[] {
-            1,
+            2147482,
             0,
             0,
             0});
             this.num_HP.Name = "num_HP";
-            this.num_HP.Size = new System.Drawing.Size(120, 20);
+            this.num_HP.Size = new System.Drawing.Size(94, 20);
             this.num_HP.TabIndex = 17;
             this.num_HP.Value = new decimal(new int[] {
             8,
@@ -447,14 +474,14 @@
             // 
             this.num_NRG.DecimalPlaces = 1;
             this.num_NRG.Enabled = false;
-            this.num_NRG.Location = new System.Drawing.Point(372, 129);
+            this.num_NRG.Location = new System.Drawing.Point(6, 59);
             this.num_NRG.Maximum = new decimal(new int[] {
-            100000,
+            2147482,
             0,
             0,
             0});
             this.num_NRG.Name = "num_NRG";
-            this.num_NRG.Size = new System.Drawing.Size(120, 20);
+            this.num_NRG.Size = new System.Drawing.Size(94, 20);
             this.num_NRG.TabIndex = 18;
             this.num_NRG.Value = new decimal(new int[] {
             8,
@@ -465,27 +492,31 @@
             // num_tokens
             // 
             this.num_tokens.Enabled = false;
-            this.num_tokens.Location = new System.Drawing.Point(209, 85);
+            this.num_tokens.Location = new System.Drawing.Point(34, 171);
+            this.num_tokens.Maximum = new decimal(new int[] {
+            2047403647,
+            0,
+            0,
+            0});
             this.num_tokens.Name = "num_tokens";
-            this.num_tokens.Size = new System.Drawing.Size(120, 20);
+            this.num_tokens.Size = new System.Drawing.Size(121, 20);
             this.num_tokens.TabIndex = 19;
             // 
             // label_HP
             // 
             this.label_HP.AutoSize = true;
             this.label_HP.Enabled = false;
-            this.label_HP.Location = new System.Drawing.Point(369, 69);
+            this.label_HP.Location = new System.Drawing.Point(3, -1);
             this.label_HP.Name = "label_HP";
             this.label_HP.Size = new System.Drawing.Size(22, 13);
             this.label_HP.TabIndex = 21;
             this.label_HP.Text = "HP";
-            this.label_HP.Click += new System.EventHandler(this.label1_Click_1);
             // 
             // label_NRG
             // 
             this.label_NRG.AutoSize = true;
             this.label_NRG.Enabled = false;
-            this.label_NRG.Location = new System.Drawing.Point(369, 113);
+            this.label_NRG.Location = new System.Drawing.Point(3, 43);
             this.label_NRG.Name = "label_NRG";
             this.label_NRG.Size = new System.Drawing.Size(31, 13);
             this.label_NRG.TabIndex = 22;
@@ -495,7 +526,7 @@
             // 
             this.label_armor.AutoSize = true;
             this.label_armor.Enabled = false;
-            this.label_armor.Location = new System.Drawing.Point(369, 154);
+            this.label_armor.Location = new System.Drawing.Point(3, 84);
             this.label_armor.Name = "label_armor";
             this.label_armor.Size = new System.Drawing.Size(34, 13);
             this.label_armor.TabIndex = 24;
@@ -504,39 +535,314 @@
             // num_armor
             // 
             this.num_armor.Enabled = false;
-            this.num_armor.Location = new System.Drawing.Point(372, 171);
+            this.num_armor.Location = new System.Drawing.Point(6, 101);
             this.num_armor.Maximum = new decimal(new int[] {
-            100000,
+            2147482,
             0,
             0,
             0});
             this.num_armor.Name = "num_armor";
-            this.num_armor.Size = new System.Drawing.Size(120, 20);
+            this.num_armor.Size = new System.Drawing.Size(94, 20);
             this.num_armor.TabIndex = 23;
             // 
             // label_tokens
             // 
             this.label_tokens.AutoSize = true;
             this.label_tokens.Enabled = false;
-            this.label_tokens.Location = new System.Drawing.Point(206, 69);
+            this.label_tokens.Location = new System.Drawing.Point(31, 154);
             this.label_tokens.Name = "label_tokens";
             this.label_tokens.Size = new System.Drawing.Size(43, 13);
             this.label_tokens.TabIndex = 25;
             this.label_tokens.Text = "Tokens";
             // 
+            // panel_stats
+            // 
+            this.panel_stats.Controls.Add(this.label_spd);
+            this.panel_stats.Controls.Add(this.num_spd);
+            this.panel_stats.Controls.Add(this.label_jmp);
+            this.panel_stats.Controls.Add(this.num_jmp);
+            this.panel_stats.Controls.Add(this.label_pwr);
+            this.panel_stats.Controls.Add(this.num_pwr);
+            this.panel_stats.Controls.Add(this.label_atk);
+            this.panel_stats.Controls.Add(this.num_atk);
+            this.panel_stats.Controls.Add(this.label_maxNRG);
+            this.panel_stats.Controls.Add(this.num_maxNRG);
+            this.panel_stats.Controls.Add(this.label_maxHP);
+            this.panel_stats.Controls.Add(this.num_maxHP);
+            this.panel_stats.Controls.Add(this.label_HP);
+            this.panel_stats.Controls.Add(this.num_HP);
+            this.panel_stats.Controls.Add(this.label_armor);
+            this.panel_stats.Controls.Add(this.num_NRG);
+            this.panel_stats.Controls.Add(this.num_armor);
+            this.panel_stats.Controls.Add(this.label_NRG);
+            this.panel_stats.Enabled = false;
+            this.panel_stats.Location = new System.Drawing.Point(396, 32);
+            this.panel_stats.Name = "panel_stats";
+            this.panel_stats.Size = new System.Drawing.Size(213, 217);
+            this.panel_stats.TabIndex = 26;
+            // 
+            // label_spd
+            // 
+            this.label_spd.AutoSize = true;
+            this.label_spd.Location = new System.Drawing.Point(115, 85);
+            this.label_spd.Name = "label_spd";
+            this.label_spd.Size = new System.Drawing.Size(59, 13);
+            this.label_spd.TabIndex = 36;
+            this.label_spd.Text = "SPD Boost";
+            // 
+            // num_spd
+            // 
+            this.num_spd.Location = new System.Drawing.Point(118, 101);
+            this.num_spd.Maximum = new decimal(new int[] {
+            2147483647,
+            0,
+            0,
+            0});
+            this.num_spd.Name = "num_spd";
+            this.num_spd.Size = new System.Drawing.Size(92, 20);
+            this.num_spd.TabIndex = 35;
+            // 
+            // label_jmp
+            // 
+            this.label_jmp.AutoSize = true;
+            this.label_jmp.Location = new System.Drawing.Point(115, 130);
+            this.label_jmp.Name = "label_jmp";
+            this.label_jmp.Size = new System.Drawing.Size(58, 13);
+            this.label_jmp.TabIndex = 34;
+            this.label_jmp.Text = "JMP Boost";
+            // 
+            // num_jmp
+            // 
+            this.num_jmp.Location = new System.Drawing.Point(118, 147);
+            this.num_jmp.Maximum = new decimal(new int[] {
+            2147483647,
+            0,
+            0,
+            0});
+            this.num_jmp.Name = "num_jmp";
+            this.num_jmp.Size = new System.Drawing.Size(92, 20);
+            this.num_jmp.TabIndex = 33;
+            // 
+            // label_pwr
+            // 
+            this.label_pwr.AutoSize = true;
+            this.label_pwr.Location = new System.Drawing.Point(115, 42);
+            this.label_pwr.Name = "label_pwr";
+            this.label_pwr.Size = new System.Drawing.Size(63, 13);
+            this.label_pwr.TabIndex = 32;
+            this.label_pwr.Text = "PWR Boost";
+            // 
+            // num_pwr
+            // 
+            this.num_pwr.Location = new System.Drawing.Point(118, 59);
+            this.num_pwr.Maximum = new decimal(new int[] {
+            2147483647,
+            0,
+            0,
+            0});
+            this.num_pwr.Minimum = new decimal(new int[] {
+            20,
+            0,
+            0,
+            -2147483648});
+            this.num_pwr.Name = "num_pwr";
+            this.num_pwr.Size = new System.Drawing.Size(92, 20);
+            this.num_pwr.TabIndex = 31;
+            // 
+            // label_atk
+            // 
+            this.label_atk.AutoSize = true;
+            this.label_atk.Location = new System.Drawing.Point(115, 0);
+            this.label_atk.Name = "label_atk";
+            this.label_atk.Size = new System.Drawing.Size(58, 13);
+            this.label_atk.TabIndex = 30;
+            this.label_atk.Text = "ATK Boost";
+            // 
+            // num_atk
+            // 
+            this.num_atk.Location = new System.Drawing.Point(118, 17);
+            this.num_atk.Maximum = new decimal(new int[] {
+            2147483647,
+            0,
+            0,
+            0});
+            this.num_atk.Minimum = new decimal(new int[] {
+            20,
+            0,
+            0,
+            -2147483648});
+            this.num_atk.Name = "num_atk";
+            this.num_atk.Size = new System.Drawing.Size(92, 20);
+            this.num_atk.TabIndex = 29;
+            // 
+            // label_maxNRG
+            // 
+            this.label_maxNRG.AutoSize = true;
+            this.label_maxNRG.Location = new System.Drawing.Point(3, 174);
+            this.label_maxNRG.Name = "label_maxNRG";
+            this.label_maxNRG.Size = new System.Drawing.Size(84, 13);
+            this.label_maxNRG.TabIndex = 28;
+            this.label_maxNRG.Text = "Max NRG Boost";
+            // 
+            // num_maxNRG
+            // 
+            this.num_maxNRG.Location = new System.Drawing.Point(6, 191);
+            this.num_maxNRG.Maximum = new decimal(new int[] {
+            2147482,
+            0,
+            0,
+            0});
+            this.num_maxNRG.Name = "num_maxNRG";
+            this.num_maxNRG.Size = new System.Drawing.Size(94, 20);
+            this.num_maxNRG.TabIndex = 27;
+            // 
+            // label_maxHP
+            // 
+            this.label_maxHP.AutoSize = true;
+            this.label_maxHP.Location = new System.Drawing.Point(3, 129);
+            this.label_maxHP.Name = "label_maxHP";
+            this.label_maxHP.Size = new System.Drawing.Size(75, 13);
+            this.label_maxHP.TabIndex = 26;
+            this.label_maxHP.Text = "Max HP Boost";
+            // 
+            // num_maxHP
+            // 
+            this.num_maxHP.Location = new System.Drawing.Point(6, 146);
+            this.num_maxHP.Maximum = new decimal(new int[] {
+            2147482,
+            0,
+            0,
+            0});
+            this.num_maxHP.Name = "num_maxHP";
+            this.num_maxHP.Size = new System.Drawing.Size(94, 20);
+            this.num_maxHP.TabIndex = 25;
+            // 
+            // textbox_seed
+            // 
+            this.textbox_seed.Enabled = false;
+            this.textbox_seed.Location = new System.Drawing.Point(214, 127);
+            this.textbox_seed.MaxLength = 13;
+            this.textbox_seed.Name = "textbox_seed";
+            this.textbox_seed.Size = new System.Drawing.Size(157, 20);
+            this.textbox_seed.TabIndex = 27;
+            this.textbox_seed.TabStop = false;
+            // 
+            // label_seed
+            // 
+            this.label_seed.AutoSize = true;
+            this.label_seed.Enabled = false;
+            this.label_seed.Location = new System.Drawing.Point(211, 111);
+            this.label_seed.Name = "label_seed";
+            this.label_seed.Size = new System.Drawing.Size(32, 13);
+            this.label_seed.TabIndex = 28;
+            this.label_seed.Text = "Seed";
+            // 
+            // panel_portals
+            // 
+            this.panel_portals.Controls.Add(this.label_portal3);
+            this.panel_portals.Controls.Add(this.combobox_portal3);
+            this.panel_portals.Controls.Add(this.label_portal2);
+            this.panel_portals.Controls.Add(this.combobox_portal2);
+            this.panel_portals.Controls.Add(this.label_portal1);
+            this.panel_portals.Controls.Add(this.combobox_portal1);
+            this.panel_portals.Enabled = false;
+            this.panel_portals.Location = new System.Drawing.Point(211, 153);
+            this.panel_portals.Name = "panel_portals";
+            this.panel_portals.Size = new System.Drawing.Size(160, 147);
+            this.panel_portals.TabIndex = 29;
+            // 
+            // label_portal3
+            // 
+            this.label_portal3.AutoSize = true;
+            this.label_portal3.Location = new System.Drawing.Point(0, 89);
+            this.label_portal3.Name = "label_portal3";
+            this.label_portal3.Size = new System.Drawing.Size(43, 13);
+            this.label_portal3.TabIndex = 34;
+            this.label_portal3.Text = "Portal 3";
+            // 
+            // combobox_portal3
+            // 
+            this.combobox_portal3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.combobox_portal3.FormattingEnabled = true;
+            this.combobox_portal3.Location = new System.Drawing.Point(3, 105);
+            this.combobox_portal3.Name = "combobox_portal3";
+            this.combobox_portal3.Size = new System.Drawing.Size(154, 21);
+            this.combobox_portal3.TabIndex = 33;
+            // 
+            // label_portal2
+            // 
+            this.label_portal2.AutoSize = true;
+            this.label_portal2.Location = new System.Drawing.Point(0, 45);
+            this.label_portal2.Name = "label_portal2";
+            this.label_portal2.Size = new System.Drawing.Size(43, 13);
+            this.label_portal2.TabIndex = 32;
+            this.label_portal2.Text = "Portal 2";
+            // 
+            // combobox_portal2
+            // 
+            this.combobox_portal2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.combobox_portal2.FormattingEnabled = true;
+            this.combobox_portal2.Location = new System.Drawing.Point(3, 62);
+            this.combobox_portal2.Name = "combobox_portal2";
+            this.combobox_portal2.Size = new System.Drawing.Size(154, 21);
+            this.combobox_portal2.TabIndex = 31;
+            this.combobox_portal2.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged_2);
+            // 
+            // label_portal1
+            // 
+            this.label_portal1.AutoSize = true;
+            this.label_portal1.Location = new System.Drawing.Point(0, 1);
+            this.label_portal1.Name = "label_portal1";
+            this.label_portal1.Size = new System.Drawing.Size(43, 13);
+            this.label_portal1.TabIndex = 30;
+            this.label_portal1.Text = "Portal 1";
+            // 
+            // combobox_portal1
+            // 
+            this.combobox_portal1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.combobox_portal1.FormattingEnabled = true;
+            this.combobox_portal1.Location = new System.Drawing.Point(3, 17);
+            this.combobox_portal1.Name = "combobox_portal1";
+            this.combobox_portal1.Size = new System.Drawing.Size(154, 21);
+            this.combobox_portal1.TabIndex = 0;
+            this.combobox_portal1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged_1);
+            // 
+            // num_level
+            // 
+            this.num_level.Enabled = false;
+            this.num_level.Location = new System.Drawing.Point(214, 85);
+            this.num_level.Maximum = new decimal(new int[] {
+            99999,
+            0,
+            0,
+            0});
+            this.num_level.Name = "num_level";
+            this.num_level.Size = new System.Drawing.Size(102, 20);
+            this.num_level.TabIndex = 30;
+            // 
+            // label_level
+            // 
+            this.label_level.AutoSize = true;
+            this.label_level.Enabled = false;
+            this.label_level.Location = new System.Drawing.Point(211, 69);
+            this.label_level.Name = "label_level";
+            this.label_level.Size = new System.Drawing.Size(33, 13);
+            this.label_level.TabIndex = 31;
+            this.label_level.Text = "Level";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(930, 633);
+            this.ClientSize = new System.Drawing.Size(996, 633);
+            this.Controls.Add(this.label_level);
+            this.Controls.Add(this.num_level);
+            this.Controls.Add(this.panel_portals);
+            this.Controls.Add(this.label_seed);
+            this.Controls.Add(this.textbox_seed);
+            this.Controls.Add(this.panel_stats);
             this.Controls.Add(this.label_tokens);
-            this.Controls.Add(this.label_armor);
-            this.Controls.Add(this.num_armor);
-            this.Controls.Add(this.label_NRG);
-            this.Controls.Add(this.label_HP);
             this.Controls.Add(this.num_tokens);
-            this.Controls.Add(this.num_NRG);
-            this.Controls.Add(this.num_HP);
             this.Controls.Add(this.num_lives);
             this.Controls.Add(this.label_lives);
             this.Controls.Add(this.label_mode);
@@ -554,7 +860,7 @@
             this.Controls.Add(this.btn_openfile);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
-            this.Text = "BetterRuns v0.79";
+            this.Text = "BetterRuns v0.95";
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.num_nuts)).EndInit();
             this.panel_weaponspowers.ResumeLayout(false);
@@ -564,6 +870,17 @@
             ((System.ComponentModel.ISupportInitialize)(this.num_NRG)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.num_tokens)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.num_armor)).EndInit();
+            this.panel_stats.ResumeLayout(false);
+            this.panel_stats.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.num_spd)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.num_jmp)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.num_pwr)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.num_atk)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.num_maxNRG)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.num_maxHP)).EndInit();
+            this.panel_portals.ResumeLayout(false);
+            this.panel_portals.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.num_level)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -611,6 +928,30 @@
         private System.Windows.Forms.Label label_armor;
         private System.Windows.Forms.NumericUpDown num_armor;
         private System.Windows.Forms.Label label_tokens;
+        private System.Windows.Forms.Panel panel_stats;
+        private System.Windows.Forms.Label label_jmp;
+        private System.Windows.Forms.NumericUpDown num_jmp;
+        private System.Windows.Forms.Label label_pwr;
+        private System.Windows.Forms.NumericUpDown num_pwr;
+        private System.Windows.Forms.Label label_atk;
+        private System.Windows.Forms.NumericUpDown num_atk;
+        private System.Windows.Forms.Label label_maxNRG;
+        private System.Windows.Forms.NumericUpDown num_maxNRG;
+        private System.Windows.Forms.Label label_maxHP;
+        private System.Windows.Forms.NumericUpDown num_maxHP;
+        private System.Windows.Forms.Label label_spd;
+        private System.Windows.Forms.NumericUpDown num_spd;
+        private System.Windows.Forms.TextBox textbox_seed;
+        private System.Windows.Forms.Label label_seed;
+        private System.Windows.Forms.Panel panel_portals;
+        private System.Windows.Forms.ComboBox combobox_portal1;
+        private System.Windows.Forms.Label label_portal1;
+        private System.Windows.Forms.Label label_portal2;
+        private System.Windows.Forms.ComboBox combobox_portal2;
+        private System.Windows.Forms.Label label_portal3;
+        private System.Windows.Forms.ComboBox combobox_portal3;
+        private System.Windows.Forms.NumericUpDown num_level;
+        private System.Windows.Forms.Label label_level;
     }
 }
 
