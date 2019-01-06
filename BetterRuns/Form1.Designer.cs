@@ -641,7 +641,7 @@
             0,
             0});
             this.num_pwr.Minimum = new decimal(new int[] {
-            20,
+            200000,
             0,
             0,
             -2147483648});
@@ -667,7 +667,7 @@
             0,
             0});
             this.num_atk.Minimum = new decimal(new int[] {
-            20,
+            200000,
             0,
             0,
             -2147483648});
@@ -692,6 +692,11 @@
             0,
             0,
             0});
+            this.num_maxNRG.Minimum = new decimal(new int[] {
+            2147482,
+            0,
+            0,
+            -2147483648});
             this.num_maxNRG.Name = "num_maxNRG";
             this.num_maxNRG.Size = new System.Drawing.Size(94, 20);
             this.num_maxNRG.TabIndex = 27;
@@ -713,6 +718,11 @@
             0,
             0,
             0});
+            this.num_maxHP.Minimum = new decimal(new int[] {
+            2147482,
+            0,
+            0,
+            -2147483648});
             this.num_maxHP.Name = "num_maxHP";
             this.num_maxHP.Size = new System.Drawing.Size(94, 20);
             this.num_maxHP.TabIndex = 25;
@@ -860,7 +870,7 @@
             this.Controls.Add(this.btn_openfile);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
-            this.Text = "BetterRuns v0.95";
+            this.Text = "BetterRuns v0.95.1";
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.num_nuts)).EndInit();
             this.panel_weaponspowers.ResumeLayout(false);
