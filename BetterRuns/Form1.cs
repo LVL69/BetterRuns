@@ -619,6 +619,20 @@ namespace BetterRuns
         {
             List<int> b = new List<int>();
             b.Add(coffset + exoffset);
+
+            for (int i = coffset + exoffset; i <= input.Count; i += 2)
+            {
+                if (input[i] == 35)
+                {
+                    if (input[i+1] == 35)
+                    {
+                        b.Add(i - 2);
+                        return b;
+                    }
+                    
+                }
+            }
+            
             b.Add(input.Count - 74);                                               
             return b;
         }
