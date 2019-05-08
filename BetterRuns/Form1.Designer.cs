@@ -870,7 +870,7 @@
             this.Controls.Add(this.btn_openfile);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
-            this.Text = "BetterRuns v0.95.2";
+            this.Text = "BetterRuns v0.95.3";
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.num_nuts)).EndInit();
             this.panel_weaponspowers.ResumeLayout(false);

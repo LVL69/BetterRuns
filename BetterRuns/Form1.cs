@@ -170,7 +170,9 @@ namespace BetterRuns
             { 2, "Vika" },
             { 3, "Jest" },
             { 4, "Draco" },
-            { 5, "Hawk" }
+            { 5, "Hawk" },
+            { 6, "Dvorac" },
+            { 7, "Autumn" }
         };
 
         Dictionary<int, string> weapondict = new Dictionary<int, string>
@@ -499,7 +501,7 @@ namespace BetterRuns
             WritePowerValue(combobox_power1, tempmodfile, 2);
 
             //write powers 2-8
-            if (combobox_contractors.SelectedIndex == 4)
+            if (combobox_contractors.SelectedIndex == 4 || combobox_contractors.SelectedIndex == 6)
             {
                 WriteMainWeaponValue(combobox_power2, tempmodfile, 4);
                 WriteMainWeaponValue(combobox_power3, tempmodfile, 6);
@@ -665,6 +667,8 @@ namespace BetterRuns
             combobox_contractors.Items.Add(contractordict[3]);
             combobox_contractors.Items.Add(contractordict[4]);
             combobox_contractors.Items.Add(contractordict[5]);
+            combobox_contractors.Items.Add(contractordict[6]);
+            combobox_contractors.Items.Add(contractordict[7]);
         }
 
         public void FillPortals(ComboBox comb)
@@ -1016,14 +1020,14 @@ namespace BetterRuns
 
 
 
-
+        
 
         //Feed power comboboxes with main weapons if Draco
         public void FDracoPowers(ComboBox cbox, int exoffset, bool changechar)
         {
             cbox.Enabled = true;
             cbox.Items.Clear();
-            if (combobox_contractors.SelectedIndex == 4)
+            if (combobox_contractors.SelectedIndex == 4 || combobox_contractors.SelectedIndex == 6)
             {
                 FillMainWeaponCombobox(cbox);
                 if (changechar == false)
@@ -1138,7 +1142,7 @@ namespace BetterRuns
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (combobox_contractors.SelectedIndex == 4)
+            if (combobox_contractors.SelectedIndex == 4 || combobox_contractors.SelectedIndex == 6)
             {
                 ToDraco();
             }
