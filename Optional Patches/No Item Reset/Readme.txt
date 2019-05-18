@@ -1,4 +1,4 @@
-If you apply this patch, you will not lose your current augs when you start a run. This means you can use BetterRuns to set your level to 0 and play a complete run with whichever augs you wish (Freeplay mode). Without this patch, the game would strip you of all your stuff and you'd begin a regular run.
+If you apply this patch, you will not lose your current augs when you start a new run. This means you can use BetterRuns to set your level to 0 and play a complete run with whichever augs you wish (Freeplay mode). Without this patch, the game would strip you of all your stuff and you'd begin a regular run.
 
 
 
