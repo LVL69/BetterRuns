@@ -7,3 +7,5 @@ How to use this editor:
 5. Go crazy.
 6. Click button "Save" and overwrite your old save state.
 7. Go crazy again.
+
+For freeplay mode (i.e. starting a new run with the augs of your choice), check out the "Optional Patches" folder.
